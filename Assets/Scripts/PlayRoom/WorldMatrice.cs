@@ -17,6 +17,8 @@ namespace PlayRoom
             this.row = row;
             this.column = column;
             matrice = new bool[row, column];
+            squashColumn = new List<int>();
+            squashRow = new List<int>();
         }
 
         public void SetTile(int row, int column)

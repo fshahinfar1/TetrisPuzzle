@@ -3,6 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace PlayRoom {
+    public struct Coordinate
+    {
+        public int row;
+        public int column;
+        
+        public Coordinate(int r, int c)
+        {
+            row = r;
+            column = c;
+        }
+
+        public override string ToString()
+        {
+            return "<" + row + ", " + column + ">";
+        }
+    }
+
     public class GridView : MonoBehaviour 
     {
         public Transform contents;
@@ -70,8 +87,8 @@ namespace PlayRoom {
         /// convert global position to (row, col)
         /// </summary>
         /// <param name="pos">Global Position</param>
-        /// <returns>a vector having (row, col) value</row></returns>
-        public Vector2 Pos2RowColumn(Vector2 pos)
+        /// <returns>a Cordinate having (row, col) value</returns>
+        public Coordinate Pos2RowColumn(Vector2 pos)
         {
             Vector2 relativePos = pos - (Vector2)transform.position 
                 + new Vector2(colWidth / 2, - rowHeight / 2);
@@ -81,14 +98,24 @@ namespace PlayRoom {
                 || relativePos.y > totalHeight)
             {
                 // not in the region
-                return new Vector2(-1, -1);
+                return new Coordinate(-1, -1);
             }
 
-            float row = relativePos.y / (rowHeight + spacing);
-            float col = relativePos.x / (colWidth + spacing);
-            row = Mathf.FloorToInt(row);
-            col = Mathf.FloorToInt(col);
-            return new Vector2(row, col);
+            float tmpRow = relativePos.y / (rowHeight + spacing);
+            float tmpCol = relativePos.x / (colWidth + spacing);
+            int row = Mathf.FloorToInt(tmpRow);
+            int col = Mathf.FloorToInt(tmpCol);
+            return new Coordinate(row, col);
+        }
+
+        /// <summary>
+        /// the returned object is refrenced to the
+        /// original value so it should not be changed
+        /// </summary>
+        /// <returns></returns>
+        public Transform[,] GetObjectMapping()
+        {
+            return objMap;
         }
     }
 }
