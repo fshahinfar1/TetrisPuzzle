@@ -11,8 +11,8 @@ namespace PlayRoom
 
         [SerializeField] Transform contents;
 
-
         WorldMatrice matrice;
+        GridView gridView;
 
         void Awake()
         {
@@ -33,13 +33,22 @@ namespace PlayRoom
 
             // add grid view
             var contentsObj = contents.gameObject;
-            var grid = contentsObj.AddComponent<GridView>();
-            grid.contents = contents;
+            gridView = contentsObj.AddComponent<GridView>();
+            gridView.contents = contents;
             Debug.Log("Set contents");
-            grid.rowNum = row;
-            grid.rowHeight = 0.8f;
-            grid.colWidth = 0.8f;
-            grid.SetupGrid(true);
+            gridView.rowNum = row;
+            gridView.rowHeight = 0.8f;
+            gridView.colWidth = 0.8f;
+            gridView.spacing = 0.2f;
+            gridView.SetupGrid(true);
+        }
+
+        void Update()
+        {
+            var pos = (Vector2)Input.mousePosition;
+            pos = Camera.main.ScreenToWorldPoint(pos);
+            pos = gridView.Pos2RowColumn(pos);
+            Debug.Log(pos);
         }
     }
 }
