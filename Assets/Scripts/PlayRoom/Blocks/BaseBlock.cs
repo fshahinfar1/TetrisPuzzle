@@ -34,6 +34,11 @@ namespace PlayRoom.Blocks
             relativePos[insertIndex++] = c;
         }
 
+        public Coordinate[] GetRelativePos()
+        {
+            return relativePos;
+        }
+
         public void SetGrid(Coordinate coordinate)
         {
             if (worldGrid == null)

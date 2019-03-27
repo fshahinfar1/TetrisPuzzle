@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PlayRoom.Blocks;
 
 namespace PlayRoom
 {
@@ -16,9 +17,12 @@ namespace PlayRoom
 
         Tile[,] tiles;
 
+        List<Tile> shadowList;
+
         void Awake()
         {
             matrice = new WorldMatrice(row, column);
+            shadowList = new List<Tile>();
             InstantiateTiles();
             General.RefBook.Register("WorldGrid", this);
         }
@@ -38,7 +42,6 @@ namespace PlayRoom
             var contentsObj = contents.gameObject;
             gridView = contentsObj.AddComponent<GridView>();
             gridView.contents = contents;
-            Debug.Log("Set contents");
             gridView.rowNum = row;
             gridView.rowHeight = 0.8f;
             gridView.colWidth = 0.8f;
@@ -50,7 +53,9 @@ namespace PlayRoom
             var matrice = gridView.GetObjectMapping();
             for (int r = 0; r < row; r++) {
                 for (int c = 0; c < column; c++) {
-                    tiles[r, c] = matrice[r, c].GetComponent<Tile>();
+                    var tileComp = matrice[r, c].GetComponent<Tile>();
+                    tileComp.SetSpriteActive(false); // hide sprite in the begining
+                    tiles[r, c] = tileComp;
                 }
             }
         }
@@ -61,6 +66,41 @@ namespace PlayRoom
             var tile = tiles[row, column];
             tile.SetSprite(s);
             tile.SetSpriteActive(true);
+        }
+
+        /// <summary>
+        /// Apply a block shadow
+        /// </summary>
+        /// <param name="pos">Global position</param>
+        /// <param name="block">Block data</param>
+        public void ApplyShadow(Vector3 pos, BaseBlock block)
+        {
+            ClearShadows();
+            Coordinate coordinate = gridView.Pos2RowColumn(pos);
+            var relativePos = block.GetRelativePos();
+            foreach (Coordinate delta in relativePos) {
+                int row = coordinate.row + delta.row;
+                int col = coordinate.column + delta.column;
+                if (!gridView.IsCoordinateValid(new Coordinate(row, col)))
+                    continue;
+                Debug.Log(row + ", " + col);
+                var tile = tiles[row, col];
+                if (!tile.IsSpriteActive())
+                {
+                    var sprite = block.GetSprite();
+                    tile.SetSprite(sprite);
+                    tile.SetSpriteActive(true);
+                    shadowList.Add(tile);
+                }
+            }
+        }
+
+        void ClearShadows()
+        {
+            foreach (Tile tile in shadowList)
+            {
+                tile.SetSpriteActive(false);
+            }
         }
 
         //void Update()

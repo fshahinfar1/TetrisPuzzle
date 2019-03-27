@@ -34,6 +34,8 @@ namespace PlayRoom {
         float totalHeight;
         float totalWidht;
 
+        int columns;
+
         void Awake () 
         {
             if (contents != null)
@@ -49,7 +51,7 @@ namespace PlayRoom {
             int countItems = contents.childCount;
             float ratio = (float)countItems / rowNum;
             int cols = Mathf.CeilToInt(ratio);
-            Debug.Log("Cols: " + cols);
+            columns = cols;
             objMap = new Transform[rowNum, cols];
             int child = 0;
             for (int r = 0; r < rowNum; r++) {
@@ -116,6 +118,13 @@ namespace PlayRoom {
         public Transform[,] GetObjectMapping()
         {
             return objMap;
+        }
+
+        public bool IsCoordinateValid(Coordinate c)
+        {
+            bool res = (c.row > -1) && (c.column > -1)
+                && (c.row < this.rowNum) && (c.column < columns);
+            return res;
         }
     }
 }

@@ -8,6 +8,7 @@ namespace PlayRoom
     public class Tile : MonoBehaviour
     {
         SpriteRenderer shape;
+        bool spriteActive;
 
         void Awake()
         {
@@ -23,6 +24,12 @@ namespace PlayRoom
         public void SetSpriteActive(bool state)
         {
             shape.gameObject.SetActive(state);
+            spriteActive = state;
+        }
+
+        public bool IsSpriteActive()
+        {
+            return spriteActive;
         }
     }
 }

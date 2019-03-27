@@ -8,6 +8,7 @@ namespace PlayRoom.Blocks
     public class BlockUI : MonoBehaviour, 
         IDragHandler, IBeginDragHandler, IEndDragHandler
     {
+        static WorldGrid worldGrid;
         BaseBlock block;
         Vector3 basePosition;
 
@@ -31,7 +32,23 @@ namespace PlayRoom.Blocks
             var pos = Input.mousePosition;
             pos = Camera.main.ScreenToWorldPoint(pos);
             pos.z = 0;
+            UpdatePosition(pos);
+            ApplyShadowOnWorldGrid(pos);
+
+        }
+
+        void UpdatePosition(Vector3 pos)
+        {
             transform.position = pos;
+        }
+
+        void ApplyShadowOnWorldGrid(Vector3 pos)
+        {
+            if (worldGrid == null)
+            {
+                worldGrid = (WorldGrid)General.RefBook.Summon("WorldGrid");
+            }
+            worldGrid.ApplyShadow(pos, block);
         }
 
         public void OnEndDrag(PointerEventData eventData)
