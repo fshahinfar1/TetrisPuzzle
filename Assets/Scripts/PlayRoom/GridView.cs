@@ -110,6 +110,17 @@ namespace PlayRoom {
             return new Coordinate(row, col);
         }
 
+        public Vector3 Coordinate2Pos(Coordinate coordinate)
+        {
+            var globalPos = transform.position;
+            float x = globalPos.x;
+            float y = globalPos.y;
+            x += coordinate.column * (colWidth + spacing);
+            y += -1 * coordinate.row * (rowHeight + spacing);
+            Vector3 pos = new Vector3(x, y, 0);
+            return pos;
+        }
+
         /// <summary>
         /// the returned object is refrenced to the
         /// original value so it should not be changed

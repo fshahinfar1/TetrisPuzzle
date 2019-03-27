@@ -19,6 +19,8 @@ namespace PlayRoom
 
         List<Tile> shadowList;
 
+        [SerializeField] GameObject rayFx;
+
         void Awake()
         {
             matrice = new WorldMatrice(row, column);
@@ -114,6 +116,16 @@ namespace PlayRoom
                 var tile = tiles[r, col];
                 tile.SetSpriteActive(false);
             }
+            int middleRow = row / 2;
+            var pos = gridView.Coordinate2Pos(new Coordinate(middleRow, col));
+            var fxObj = Instantiate(rayFx);
+            var fxTr = fxObj.transform;
+            fxTr.position = pos;
+            fxTr.Rotate(new Vector3(0, 0, 90));
+            General.DelayCall.Call(this, () =>
+            {
+                Destroy(fxObj);
+            }, 0.3f);
         }
 
         void SquashRow(int row)
@@ -124,6 +136,14 @@ namespace PlayRoom
                 var tile = tiles[row, c];
                 tile.SetSpriteActive(false);
             }
+            int middleCol = column / 2;
+            var pos = gridView.Coordinate2Pos(new Coordinate(row, middleCol));
+            var fxObj = Instantiate(rayFx);
+            fxObj.transform.position = pos;
+            General.DelayCall.Call(this, () =>
+            {
+                Destroy(fxObj);
+            }, 0.3f);
         }
 
         /// <summary>

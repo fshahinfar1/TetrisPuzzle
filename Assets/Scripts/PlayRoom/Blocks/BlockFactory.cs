@@ -18,9 +18,9 @@ namespace PlayRoom.Blocks
             else if (name == "3-Block")
             {
                 var block = new BaseBlock(3);
+                block.AddRelativePos(new Coordinate(0, -1));
                 block.AddRelativePos(new Coordinate(0, 0));
                 block.AddRelativePos(new Coordinate(0, 1));
-                block.AddRelativePos(new Coordinate(0, 2));
                 block.SetSprite(s);
                 return block;
             }

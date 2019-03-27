@@ -144,6 +144,7 @@ MonoBehaviour:
   row: 5
   column: 4
   contents: {fileID: 2109740102}
+  rayFx: {fileID: 7235480926229696855, guid: 38c2cec1a0bd90f448a43055df0085b3, type: 3}
 --- !u!4 &25732722
 Transform:
   m_ObjectHideFlags: 0
