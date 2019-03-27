@@ -34,7 +34,6 @@ namespace PlayRoom.Blocks
             pos.z = 0;
             UpdatePosition(pos);
             ApplyShadowOnWorldGrid(pos);
-
         }
 
         void UpdatePosition(Vector3 pos)
@@ -54,6 +53,7 @@ namespace PlayRoom.Blocks
         public void OnEndDrag(PointerEventData eventData)
         {
             transform.position = basePosition;
+            worldGrid.ClearShadows();
         }
     }
 }

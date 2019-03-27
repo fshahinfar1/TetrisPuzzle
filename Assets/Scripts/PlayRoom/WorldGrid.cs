@@ -95,7 +95,7 @@ namespace PlayRoom
             }
         }
 
-        void ClearShadows()
+        public void ClearShadows()
         {
             foreach (Tile tile in shadowList)
             {
