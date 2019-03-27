@@ -54,6 +54,10 @@ namespace PlayRoom.Blocks
         {
             transform.position = basePosition;
             worldGrid.ClearShadows();
+            var pos = Input.mousePosition;
+            pos = Camera.main.ScreenToWorldPoint(pos);
+            pos.z = 0;
+            worldGrid.SetTiles(pos, block);
         }
     }
 }

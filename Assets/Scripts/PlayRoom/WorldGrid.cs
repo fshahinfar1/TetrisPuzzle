@@ -60,12 +60,35 @@ namespace PlayRoom
             }
         }
 
-        public void SetTiles(int row, int column, Sprite s)
+        public void SetTiles(Vector3 pos, BaseBlock block)
         {
-            matrice.SetTile(row, column);
-            var tile = tiles[row, column];
-            tile.SetSprite(s);
-            tile.SetSpriteActive(true);
+            Coordinate coordinate = gridView.Pos2RowColumn(pos);
+            if (!gridView.IsCoordinateValid(coordinate))
+                return;
+            var relativePos = block.GetRelativePos();
+            foreach (Coordinate delta in relativePos)
+            {
+                // check all coordinates are valid
+                int row = coordinate.row + delta.row;
+                int col = coordinate.column + delta.column;
+                if (!gridView.IsCoordinateValid(new Coordinate(row, col)))
+                    return;
+                // check if all coordinates are empty
+                if (matrice.IsFilled(row, col))
+                    return;
+            }
+            foreach (Coordinate delta in relativePos)
+            {
+                int row = coordinate.row + delta.row;
+                int col = coordinate.column + delta.column;
+                var tile = tiles[row, col];
+                var sprite = block.GetSprite();
+                tile.SetSprite(sprite);
+                tile.SetSpriteAlpha(1);
+                tile.SetSpriteActive(true);
+                Debug.Log(row + ", " + col);
+                matrice.SetTile(row, col);
+            }
         }
 
         /// <summary>
@@ -77,18 +100,20 @@ namespace PlayRoom
         {
             ClearShadows();
             Coordinate coordinate = gridView.Pos2RowColumn(pos);
+            if (!gridView.IsCoordinateValid(coordinate))
+                return;
             var relativePos = block.GetRelativePos();
             foreach (Coordinate delta in relativePos) {
                 int row = coordinate.row + delta.row;
                 int col = coordinate.column + delta.column;
                 if (!gridView.IsCoordinateValid(new Coordinate(row, col)))
                     continue;
-                Debug.Log(row + ", " + col);
                 var tile = tiles[row, col];
                 if (!tile.IsSpriteActive())
                 {
                     var sprite = block.GetSprite();
                     tile.SetSprite(sprite);
+                    tile.SetSpriteAlpha(.5f);
                     tile.SetSpriteActive(true);
                     shadowList.Add(tile);
                 }
@@ -101,6 +126,7 @@ namespace PlayRoom
             {
                 tile.SetSpriteActive(false);
             }
+            shadowList.Clear();
         }
 
         //void Update()

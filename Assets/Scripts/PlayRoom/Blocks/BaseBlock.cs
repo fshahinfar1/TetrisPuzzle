@@ -38,18 +38,5 @@ namespace PlayRoom.Blocks
         {
             return relativePos;
         }
-
-        public void SetGrid(Coordinate coordinate)
-        {
-            if (worldGrid == null)
-            {
-                worldGrid = (WorldGrid)General.RefBook.Summon("WorldGrid");
-            }
-            foreach (Coordinate delta in relativePos) {
-                int row = coordinate.row + delta.row;
-                int col = coordinate.column + delta.column;
-                worldGrid.SetTiles(row, col, sprite);
-            }
-        }
     }
 }

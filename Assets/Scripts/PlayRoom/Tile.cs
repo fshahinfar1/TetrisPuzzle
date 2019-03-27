@@ -9,6 +9,7 @@ namespace PlayRoom
     {
         SpriteRenderer shape;
         bool spriteActive;
+        float spriteAlpha;
 
         void Awake()
         {
@@ -30,6 +31,13 @@ namespace PlayRoom
         public bool IsSpriteActive()
         {
             return spriteActive;
+        }
+
+        public void SetSpriteAlpha(float a)
+        {
+            var color = shape.color;
+            color.a = a;
+            shape.color = color;
         }
     }
 }
