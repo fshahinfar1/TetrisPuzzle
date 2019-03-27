@@ -5,7 +5,8 @@ namespace General
 {
     public class RefBook
     {
-        static Dictionary<string, object> masterBook;
+        static Dictionary<string, object> masterBook 
+            = new Dictionary<string, object>();
 
         public static void Register(string key, object refrence)
         {
