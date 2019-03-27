@@ -20,6 +20,7 @@ namespace PlayRoom
         {
             matrice = new WorldMatrice(row, column);
             InstantiateTiles();
+            General.RefBook.Register("WorldGrid", this);
         }
 
         void InstantiateTiles()
@@ -54,17 +55,25 @@ namespace PlayRoom
             }
         }
 
-        void Update()
+        public void SetTiles(int row, int column, Sprite s)
         {
-            var pos = (Vector2)Input.mousePosition;
-            pos = Camera.main.ScreenToWorldPoint(pos);
-            var cordinates = gridView.Pos2RowColumn(pos);
-            int row = cordinates.row;
-            int col = cordinates.column;
-            if (row != -1 && col != -1) {
-                tiles[row, col].SetSpriteActive(false);
-            }
-            Debug.Log(cordinates);
+            matrice.SetTile(row, column);
+            var tile = tiles[row, column];
+            tile.SetSprite(s);
+            tile.SetSpriteActive(true);
         }
+
+        //void Update()
+        //{
+        //    var pos = (Vector2)Input.mousePosition;
+        //    pos = Camera.main.ScreenToWorldPoint(pos);
+        //    var cordinates = gridView.Pos2RowColumn(pos);
+        //    int row = cordinates.row;
+        //    int col = cordinates.column;
+        //    if (row != -1 && col != -1) {
+        //        tiles[row, col].SetSpriteActive(false);
+        //    }
+        //    Debug.Log(cordinates);
+        //}
     }
 }
