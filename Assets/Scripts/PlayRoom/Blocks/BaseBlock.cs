@@ -24,6 +24,11 @@ namespace PlayRoom.Blocks
             sprite = s;
         }
 
+        public Sprite GetSprite()
+        {
+            return sprite;
+        }
+
         public void AddRelativePos(Coordinate c)
         {
             relativePos[insertIndex++] = c;

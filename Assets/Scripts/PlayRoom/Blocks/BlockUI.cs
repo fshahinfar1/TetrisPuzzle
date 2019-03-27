@@ -14,6 +14,11 @@ namespace PlayRoom.Blocks
         public void SetBlock(BaseBlock b)
         {
             block = b;
+            // update sprite of tiles
+            foreach(Transform t in transform) {
+                var tile = t.GetComponent<Tile>();
+                tile.SetSprite(b.GetSprite());
+            }
         }
 
         public void OnBeginDrag(PointerEventData eventData)
