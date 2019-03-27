@@ -9,8 +9,22 @@ namespace PlayRoom.Blocks
         IDragHandler, IBeginDragHandler, IEndDragHandler
     {
         static WorldGrid worldGrid;
+        static BlockGenerator generator;
         BaseBlock block;
         Vector3 basePosition;
+
+        void Start()
+        {
+            if (worldGrid == null)
+            {
+                worldGrid = (WorldGrid)General.RefBook.Summon("WorldGrid");
+            }
+            if (generator == null)
+            {
+                generator = (BlockGenerator)General.RefBook
+                    .Summon("BlockGenerator");
+            }
+        }
 
         public void SetBlock(BaseBlock b)
         {
@@ -43,10 +57,6 @@ namespace PlayRoom.Blocks
 
         void ApplyShadowOnWorldGrid(Vector3 pos)
         {
-            if (worldGrid == null)
-            {
-                worldGrid = (WorldGrid)General.RefBook.Summon("WorldGrid");
-            }
             worldGrid.ApplyShadow(pos, block);
         }
 
@@ -57,7 +67,11 @@ namespace PlayRoom.Blocks
             var pos = Input.mousePosition;
             pos = Camera.main.ScreenToWorldPoint(pos);
             pos.z = 0;
-            worldGrid.SetTiles(pos, block);
+            bool res = worldGrid.SetTiles(pos, block);
+            if (res) {
+                Destroy(gameObject);
+                generator.Generate();
+            }
         }
     }
 }

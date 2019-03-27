@@ -60,11 +60,11 @@ namespace PlayRoom
             }
         }
 
-        public void SetTiles(Vector3 pos, BaseBlock block)
+        public bool SetTiles(Vector3 pos, BaseBlock block)
         {
             Coordinate coordinate = gridView.Pos2RowColumn(pos);
             if (!gridView.IsCoordinateValid(coordinate))
-                return;
+                return false;
             var relativePos = block.GetRelativePos();
             foreach (Coordinate delta in relativePos)
             {
@@ -72,10 +72,10 @@ namespace PlayRoom
                 int row = coordinate.row + delta.row;
                 int col = coordinate.column + delta.column;
                 if (!gridView.IsCoordinateValid(new Coordinate(row, col)))
-                    return;
+                    return false;
                 // check if all coordinates are empty
                 if (matrice.IsFilled(row, col))
-                    return;
+                    return false;
             }
             foreach (Coordinate delta in relativePos)
             {
@@ -89,6 +89,7 @@ namespace PlayRoom
                 Debug.Log(row + ", " + col);
                 matrice.SetTile(row, col);
             }
+            return true;
         }
 
         /// <summary>
