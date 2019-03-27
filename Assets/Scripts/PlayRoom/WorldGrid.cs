@@ -86,10 +86,44 @@ namespace PlayRoom
                 tile.SetSprite(sprite);
                 tile.SetSpriteAlpha(1);
                 tile.SetSpriteActive(true);
-                Debug.Log(row + ", " + col);
+                //Debug.Log(row + ", " + col);
                 matrice.SetTile(row, col);
             }
+            CheckForSquash();
             return true;
+        }
+
+        void CheckForSquash()
+        {
+            int next = matrice.NextSquashColumn();
+            while(next != -1) {
+                SquashColumn(next);
+                next = matrice.NextSquashColumn();
+            }
+            next = matrice.NextSquashRow();
+            while (next != -1) {
+                SquashRow(next);
+                next = matrice.NextSquashRow();
+            }
+        }
+
+        void SquashColumn(int col)
+        {
+            matrice.ClearColumn(col);
+            for (int r = 0; r < this.row; r++) {
+                var tile = tiles[r, col];
+                tile.SetSpriteActive(false);
+            }
+        }
+
+        void SquashRow(int row)
+        {
+            matrice.ClearRow(row);
+            for (int c = 0; c < this.column; c++)
+            {
+                var tile = tiles[row, c];
+                tile.SetSpriteActive(false);
+            }
         }
 
         /// <summary>

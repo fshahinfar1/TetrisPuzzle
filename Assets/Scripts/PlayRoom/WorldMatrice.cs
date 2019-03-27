@@ -77,6 +77,8 @@ namespace PlayRoom
 
         public int NextSquashRow()
         {
+            if (squashRow.Count == 0)
+                return -1;
             int next = squashRow[0];
             squashRow.RemoveAt(0);
             return next;
@@ -84,6 +86,8 @@ namespace PlayRoom
 
         public int NextSquashColumn()
         {
+            if (squashColumn.Count == 0)
+                return -1;
             int next = squashColumn[0];
             squashColumn.RemoveAt(0);
             return next;
