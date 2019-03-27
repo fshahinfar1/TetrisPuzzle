@@ -73,6 +73,28 @@ namespace PlayRoom
         public bool SetTiles(Vector3 pos, BaseBlock block)
         {
             Coordinate coordinate = gridView.Pos2RowColumn(pos);
+            if (!CheckPlacementPossible(coordinate, block)) {
+                return false;
+            }
+            var relativePos = block.GetRelativePos();
+            foreach (Coordinate delta in relativePos)
+            {
+                int row = coordinate.row + delta.row;
+                int col = coordinate.column + delta.column;
+                var tile = tiles[row, col];
+                var sprite = block.GetSprite();
+                tile.SetSprite(sprite);
+                tile.SetSpriteAlpha(1);
+                tile.SetSpriteActive(true);
+                //Debug.Log(row + ", " + col);
+                matrice.SetTile(row, col);
+            }
+            CheckForSquash();
+            return true;
+        }
+
+        public bool CheckPlacementPossible(Coordinate coordinate, BaseBlock block)
+        {
             if (!gridView.IsCoordinateValid(coordinate))
                 return false;
             var relativePos = block.GetRelativePos();
@@ -87,19 +109,6 @@ namespace PlayRoom
                 if (matrice.IsFilled(row, col))
                     return false;
             }
-            foreach (Coordinate delta in relativePos)
-            {
-                int row = coordinate.row + delta.row;
-                int col = coordinate.column + delta.column;
-                var tile = tiles[row, col];
-                var sprite = block.GetSprite();
-                tile.SetSprite(sprite);
-                tile.SetSpriteAlpha(1);
-                tile.SetSpriteActive(true);
-                //Debug.Log(row + ", " + col);
-                matrice.SetTile(row, col);
-            }
-            CheckForSquash();
             return true;
         }
 
@@ -194,17 +203,14 @@ namespace PlayRoom
             shadowList.Clear();
         }
 
-        //void Update()
-        //{
-        //    var pos = (Vector2)Input.mousePosition;
-        //    pos = Camera.main.ScreenToWorldPoint(pos);
-        //    var cordinates = gridView.Pos2RowColumn(pos);
-        //    int row = cordinates.row;
-        //    int col = cordinates.column;
-        //    if (row != -1 && col != -1) {
-        //        tiles[row, col].SetSpriteActive(false);
-        //    }
-        //    Debug.Log(cordinates);
-        //}
+        public int GetCountRows()
+        {
+            return this.row;
+        }
+
+        public int GetCountColumns()
+        {
+            return this.column;
+        }
     }
 }

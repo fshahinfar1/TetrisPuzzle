@@ -92,5 +92,15 @@ namespace PlayRoom
             squashColumn.RemoveAt(0);
             return next;
         }
+
+        public int GetCountRows()
+        {
+            return this.row;
+        }
+
+        public int GetCountColumns()
+        {
+            return this.column;
+        }
     }
 }

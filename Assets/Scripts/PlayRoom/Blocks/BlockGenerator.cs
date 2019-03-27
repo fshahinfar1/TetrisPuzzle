@@ -10,6 +10,10 @@ namespace PlayRoom.Blocks
         List<string> blockNames;
         Sprite[] sprites;
 
+        Manager manager;
+
+        public event System.Action<BaseBlock> onGenerate;
+
         void Awake()
         {
             blockNames = new List<string>() {
@@ -34,6 +38,8 @@ namespace PlayRoom.Blocks
             blockUi.SetBlock(baseBlock);
             // add block to pannel
             obj.transform.SetParent(container, false);
+            if (onGenerate != null)
+                onGenerate.Invoke(baseBlock);
         }
 
         string GetRandomBlock()
