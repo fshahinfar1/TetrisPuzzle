@@ -7,6 +7,7 @@ namespace PlayRoom
 {
     public class WorldGrid : MonoBehaviour
     {
+        static Vector3 NintyDegree = new Vector3(0, 0, 90);
         [SerializeField] int row;
         [SerializeField] int column;
 
@@ -21,12 +22,19 @@ namespace PlayRoom
 
         [SerializeField] GameObject rayFx;
 
+        Manager manager;
+
         void Awake()
         {
             matrice = new WorldMatrice(row, column);
             shadowList = new List<Tile>();
             InstantiateTiles();
             General.RefBook.Register("WorldGrid", this);
+        }
+
+        private void Start()
+        {
+            manager = (Manager)General.RefBook.Summon("Manager");
         }
 
         void InstantiateTiles()
@@ -121,11 +129,12 @@ namespace PlayRoom
             var fxObj = Instantiate(rayFx);
             var fxTr = fxObj.transform;
             fxTr.position = pos;
-            fxTr.Rotate(new Vector3(0, 0, 90));
+            fxTr.Rotate(NintyDegree);
             General.DelayCall.Call(this, () =>
             {
                 Destroy(fxObj);
             }, 0.3f);
+            manager.AddScore(this.column);
         }
 
         void SquashRow(int row)
@@ -144,6 +153,7 @@ namespace PlayRoom
             {
                 Destroy(fxObj);
             }, 0.3f);
+            manager.AddScore(this.row);
         }
 
         /// <summary>
